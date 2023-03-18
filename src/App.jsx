@@ -24,6 +24,7 @@ import PreviewPage from "./pages/PreviewPage";
 import Error from "./pages/Error";
 
 function App() {
+  console.log("we made it");
   //useState hooks:
   const [mainPageList, setMainPageList] = useState([]);
   const [currentUser, setCurrentUser] = useState(null);
