@@ -61,15 +61,6 @@ function App() {
     return () => unSubscribe();
   }, []);
 
-  //preload all images:
-  useEffect(() => {
-    mainPageList.forEach((page) => {
-      const img = new Image();
-      img.src = page.backgroundImage;
-      console.log(img);
-    });
-  }, [mainPageList]);
-
   //protected route comp:
   const ProtectedRoute = ({ children }) => {
     if (!currentUser) {

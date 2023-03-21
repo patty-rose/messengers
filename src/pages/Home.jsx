@@ -1,6 +1,6 @@
 import { Box, Stack, Typography } from "@mui/material";
-import React from "react";
-import {useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import homeBackground from "../img/homeBackground.jpg";
 import candle from "../img/candle.png";
@@ -8,9 +8,21 @@ import hand from "../img/hand.png";
 
 const Home = (props) => {
   const { listOfPages, onGetRandomPageId } = props;
+  const [imagesLoaded, setImagesLoaded] = useState(false);
   const navigate = useNavigate();
 
   const randomPageId = onGetRandomPageId(listOfPages);
+
+  //preload all images:
+  useEffect(() => {
+    listOfPages.forEach((page) => {
+      const img = new Image();
+      img.src = page.backgroundImage;
+      console.log(img);
+      img.style.display = "none"; // hide the image
+    document.getElementById("hidden-container").appendChild(img); // add the image to the hidden container
+    });
+  }, []);
 
   const handleNavigationClick = () => {
     navigate(`/${randomPageId}`);
@@ -25,12 +37,15 @@ const Home = (props) => {
   };
 
   return (
-    <Box sx={{ display: "flex", alignItems: "center",         justifyContent: "center",  ...molPageStyle }}>
-      <Stack
-        direction="column"
-        spacing={8}
-        alignItems="center"
-      >
+    <Box
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        ...molPageStyle,
+      }}
+    >
+      <Stack direction="column" spacing={8} alignItems="center">
         <Typography variant="h1" color="primary">
           Messengers of Lahar
         </Typography>
@@ -69,6 +84,7 @@ const Home = (props) => {
           handleNavigationClick();
         }}
       />
+      <div id="hidden-container"></div>
     </Box>
   );
 };
