@@ -24,8 +24,6 @@ import PreviewPage from "./pages/PreviewPage";
 import Error from "./pages/Error";
 
 function App() {
-  console.log("we made it");
-  //useState hooks:
   const [mainPageList, setMainPageList] = useState([]);
   const [currentUser, setCurrentUser] = useState(null);
 
@@ -34,11 +32,9 @@ function App() {
 
   onAuthStateChanged(auth, (user) => {
     if (user) {
-      // localStorage.setItem("authUser", JSON.stringify(authUser));
       setCurrentUser(user);
     } else {
       setCurrentUser(null);
-      // localStorage.removeItem("authUser");
     }
   });
 
@@ -64,6 +60,15 @@ function App() {
     );
     return () => unSubscribe();
   }, []);
+
+  //preload all images:
+  useEffect(() => {
+    mainPageList.forEach((page) => {
+      const img = new Image();
+      img.src = page.backgroundImage;
+      console.log(img);
+    });
+  }, [mainPageList]);
 
   //protected route comp:
   const ProtectedRoute = ({ children }) => {

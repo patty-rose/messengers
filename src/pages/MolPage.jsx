@@ -17,7 +17,6 @@ const MolPage = (props) => {
 
   const handleNavigationClick = () => {
     navigate(`/${randomPageId}`)
-    console.log("trying to navigate", randomPageId);
   }
 
   const molPageStyle = {
