@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { useNavigate, useParams } from "react-router-dom";
+import { TextField } from "@mui/material";
 
 function EditPage(props) {
   const { listOfPages } = props;
@@ -25,7 +26,24 @@ function EditPage(props) {
   return (
     <React.Fragment>
         <form onSubmit={handleEditPageSubmission}>
-        <label>text to display on page</label>
+        <TextField 
+          label="text to display on page" 
+          name="pageText"
+          variant="outlined"
+          defaultValue={formData.pageText}
+          onChange={(e) => {
+            setFormData({ ...formData, pageText: e.target.value });
+          }} />
+        <TextField 
+          label="Background Image URL" 
+          name="backgroundImage"
+          variant="outlined"
+          defaultValue={formData.backgroundImage} 
+          onChange={(e) => {
+            setFormData({ ...formData, backgroundImage: e.target.value });
+          }} />
+
+        {/* <label>text to display on page</label>
         <input
           type='text'
           name='pageText'
@@ -40,7 +58,7 @@ function EditPage(props) {
           defaultValue={formData.backgroundImage} 
           onChange={(e) => {
             setFormData({ ...formData, backgroundImage: e.target.value });
-          }}/>
+          }}/> */}
         <button type='submit'>Edit</button>
       </form>
     </React.Fragment>

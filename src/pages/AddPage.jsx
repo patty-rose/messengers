@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { serverTimestamp } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
+import { TextField } from "@mui/material";
 
 function AddPage(props) {
   const navigate = useNavigate();
@@ -19,7 +20,15 @@ function AddPage(props) {
   return (
     <React.Fragment>
       <form onSubmit={handleAddPageSubmission}>
-        <input
+        <TextField 
+          label="text to display on page" 
+          name="pageText"
+          variant="outlined" />
+        <TextField 
+          label="Background Image URL" 
+          name="backgroundImage"
+          variant="outlined" />
+        {/* <input
           type="text"
           name="pageText"
           placeholder="text to display on page"
@@ -28,7 +37,7 @@ function AddPage(props) {
           type="text"
           name="backgroundImage"
           placeholder="Background Image URL"
-        />
+        /> */}
         <button type="submit">Submit</button>
       </form>
     </React.Fragment>
