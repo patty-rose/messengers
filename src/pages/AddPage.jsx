@@ -28,16 +28,6 @@ function AddPage(props) {
           label="Background Image URL" 
           name="backgroundImage"
           variant="outlined" />
-        {/* <input
-          type="text"
-          name="pageText"
-          placeholder="text to display on page"
-        />
-        <input
-          type="text"
-          name="backgroundImage"
-          placeholder="Background Image URL"
-        /> */}
         <button type="submit">Submit</button>
       </form>
     </React.Fragment>
