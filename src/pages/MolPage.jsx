@@ -24,6 +24,7 @@ const MolPage = (props) => {
     height: "100vh",
     backgroundSize: "cover",
     backgroundRepeat: "no-repeat",
+    backgroundPosition: "center",
   };
 
   return (

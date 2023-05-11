@@ -13,20 +13,19 @@ const Home = (props) => {
 
   const randomPageId = onGetRandomPageId(listOfPages);
 
-  //preload all images:
-  useEffect(() => {
-    listOfPages.forEach((page) => {
-      const img = new Image();
-      img.src = page.backgroundImage;
-      console.log(img);
-      img.style.display = "none"; // hide the image
-    document.getElementById("hidden-container").appendChild(img); // add the image to the hidden container
-    });
-  }, []);
+  // // preload all images:
+  // useEffect(() => {
+  //   listOfPages.forEach((page) => {
+  //     const img = new Image();
+  //     img.src = page.backgroundImage;
+  //     console.log(img);
+  //     // img.style.display = "none"; // hide the image
+  //   document.getElementById("hidden-container").appendChild(img); // add the image to the hidden container
+  //   });
+  // }, []);
 
   const handleNavigationClick = () => {
     navigate(`/${randomPageId}`);
-    console.log("trying to navigate", randomPageId);
   };
 
   const molPageStyle = {

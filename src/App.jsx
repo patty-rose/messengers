@@ -53,6 +53,13 @@ function App() {
           });
         });
         setMainPageList(pages);
+
+        pages.forEach((page) => {
+          const img = new Image();
+          img.src = page.backgroundImage;
+          img.style.display = "none"; // hide the image
+          document.getElementById("hidden-container").appendChild(img); // add the image to the hidden container
+        });
       },
       (error) => {
         //add more
