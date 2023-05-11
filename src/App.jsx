@@ -54,15 +54,16 @@ function App() {
         });
         setMainPageList(pages);
 
+        //preload all images
         pages.forEach((page) => {
           const img = new Image();
           img.src = page.backgroundImage;
-          img.style.display = "none"; // hide the image
-          document.getElementById("hidden-container").appendChild(img); // add the image to the hidden container
+          img.style.display = "none";
+          document.getElementById("hidden-container").appendChild(img);
         });
       },
       (error) => {
-        //add more
+        console.log("Error:", error)
       }
     );
     return () => unSubscribe();

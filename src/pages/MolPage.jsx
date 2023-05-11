@@ -45,7 +45,13 @@ const MolPage = (props) => {
           height: "30%",
           position: "fixed",
           bottom: 0,
-          left: "15%"
+          left: "15%",
+          transition: "transform 0.3s, filter 0.3s",
+          cursor: "help",
+          "&:hover": {
+            transform: "scale(1.01)",
+            filter: "drop-shadow(0px 0px 8px rgba(255, 255, 255, 0.5))",
+          },
         }}
         alt="a black and white hand, palm facing viewer, holding up thumb, index, and middle finger, with pinky and ring tucked and pressing on palm."
         src={hand}
@@ -58,7 +64,13 @@ const MolPage = (props) => {
           height: "30%",
           position: "fixed",
           bottom: 0,
-          right: "15%"
+          right: "15%",
+          transition: "transform 0.3s, filter 0.3s",
+          cursor: "help",
+          "&:hover": {
+            transform: "scale(1.01)",
+            filter: "drop-shadow(0px 0px 8px rgba(255, 255, 255, 0.5))",
+          },
         }}
         alt="a black and white lit candle"
         src={candle}
