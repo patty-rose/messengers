@@ -53,17 +53,9 @@ function App() {
           });
         });
         setMainPageList(pages);
-
-        //preload all images
-        pages.forEach((page) => {
-          const img = new Image();
-          img.src = page.backgroundImage;
-          img.style.display = "none";
-          document.getElementById("hidden-container").appendChild(img);
-        });
       },
       (error) => {
-        console.log("Error:", error)
+        console.log("Error:", error);
       }
     );
     return () => unSubscribe();
@@ -146,7 +138,7 @@ function App() {
                   <AddPage onNewPageCreation={handleAddingNewPageToList} />
                 </ProtectedRoute>
               }
-            ></Route>
+            />
 
             <Route
               path="edit/:pageId"
