@@ -1,33 +1,62 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { serverTimestamp } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import { TextField } from "@mui/material";
+import { storage } from "../firebase";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { v4 } from "uuid";
 
 function AddPage(props) {
   const navigate = useNavigate();
+  const [imageUpload, setImageUpload] = useState();
 
-  function handleAddPageSubmission(event) {
+  const uploadImage = async () => {
+    if (imageUpload == null) return null;
+    const imageRef = ref(storage, `/${imageUpload.name + v4()}`);
+  
+    try {
+      const snapshot = await uploadBytes(imageRef, imageUpload);
+      const url = await getDownloadURL(snapshot.ref);
+      return url;
+    } catch (error) {
+      console.error("Error uploading image:", error);
+      return null;
+    }
+  };
+
+  const handleAddPageSubmission = async (event) => {
     event.preventDefault();
-    props.onNewPageCreation({
-      pageText: event.target.pageText.value,
-      backgroundImage: event.target.backgroundImage.value,
-      timeOpen: serverTimestamp(),
-    });
-    navigate("/admin/dashboard");
-  }
+    const backgroundURL = await uploadImage();
+    if (backgroundURL) {
+      props.onNewPageCreation({
+        pageText: event.target.pageText.value,
+        backgroundImage: backgroundURL,
+        timeOpen: serverTimestamp(),
+      });
+      navigate("/admin/dashboard");
+    } else {
+      // Handle case when image upload fails
+      // Add appropriate error handling logic here
+      console.error("Image upload failed.");
+    }
+  };
 
   return (
     <React.Fragment>
       <form onSubmit={handleAddPageSubmission}>
-        <TextField 
-          label="text to display on page" 
+        <TextField
+          label="text to display on page"
           name="pageText"
-          variant="outlined" />
-        <TextField 
-          label="Background Image URL" 
-          name="backgroundImage"
-          variant="outlined" />
+          variant="outlined"
+        />
+
+        <input
+          type="file"
+          onChange={(event) => {
+            setImageUpload(event.target.files[0]);
+          }}
+        />
         <button type="submit">Submit</button>
       </form>
     </React.Fragment>
