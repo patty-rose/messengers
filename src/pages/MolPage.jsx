@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Link, useParams, useNavigate } from "react-router-dom";
-import { Box, Stack, Typography } from "@mui/material";
+import { Box, Stack, Typography, useMediaQuery } from "@mui/material";
 import { red } from "@mui/material/colors";
 import candle from "../img/candle.png";
 import hand from "../img/hand.png";
@@ -10,6 +10,7 @@ const MolPage = (props) => {
   const { listOfPages, onGetRandomPageId } = props;
   const { pageId } = useParams();
   const navigate = useNavigate();
+  const isMobile = useMediaQuery('(max-width: 600px)');
 
   const thisPage = listOfPages.find((page) => page.id === pageId);
 
@@ -42,12 +43,14 @@ const MolPage = (props) => {
         alignItems="center"
       >
         <Typography
-          variant="h3"
+          variant='h3'
           sx={{
             color: "red",
             textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)",
-            marginLeft: "10vh",
-            marginRight: "10vh" 
+            marginLeft: isMobile ? '5vh' : "10vh",
+            marginRight: isMobile ? '5vh' : "10vh",
+            marginBottom: isMobile ? '70vh' : '0',
+            fontSize: isMobile ? '7vw' : undefined
           }}
         >
           {thisPage.pageText}
