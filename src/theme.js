@@ -2,6 +2,20 @@ import { createTheme, responsiveFontSizes } from "@mui/material/styles";
 import { red } from "@mui/material/colors";
 
 const theme = createTheme({
+  components: {
+    MuiCssBaseline: {
+      styleOverrides: {
+        html: {
+          margin: 0,
+          padding: 0,
+        },
+        body: {
+          margin: 0,
+          padding: 0,
+        },
+      },
+    },
+  },
   palette: {
     primary: {
       light: red[50],

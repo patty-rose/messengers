@@ -16,8 +16,8 @@ const MolPage = (props) => {
   const randomPageId = onGetRandomPageId(listOfPages);
 
   const handleNavigationClick = () => {
-    navigate(`/${randomPageId}`)
-  }
+    navigate(`/${randomPageId}`);
+  };
 
   const molPageStyle = {
     backgroundImage: `url('${thisPage.backgroundImage}')`,
@@ -28,13 +28,28 @@ const MolPage = (props) => {
   };
 
   return (
-    <Box sx={{ display: "flex", alignItems: "center",         justifyContent: "center",  ...molPageStyle }}>
+    <Box
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        ...molPageStyle,
+      }}
+    >
       <Stack
         direction="column"
         spacing={8}
         alignItems="center"
       >
-        <Typography variant="h4" color="primary">
+        <Typography
+          variant="h3"
+          sx={{
+            color: "red",
+            textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)",
+            marginLeft: "10vh",
+            marginRight: "10vh" 
+          }}
+        >
           {thisPage.pageText}
         </Typography>
       </Stack>
@@ -55,7 +70,9 @@ const MolPage = (props) => {
         }}
         alt="a black and white hand, palm facing viewer, holding up thumb, index, and middle finger, with pinky and ring tucked and pressing on palm."
         src={hand}
-        onClick= {()=>{handleNavigationClick()}}
+        onClick={() => {
+          handleNavigationClick();
+        }}
       />
 
       <Box
@@ -74,7 +91,9 @@ const MolPage = (props) => {
         }}
         alt="a black and white lit candle"
         src={candle}
-        onClick= {()=>{handleNavigationClick()}}
+        onClick={() => {
+          handleNavigationClick();
+        }}
       />
     </Box>
   );

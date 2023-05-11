@@ -1,5 +1,5 @@
 import { Box, Stack, Typography } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import homeBackground from "../img/homeBackground.jpg";
@@ -32,16 +32,34 @@ const Home = (props) => {
         ...molPageStyle,
       }}
     >
-      <Stack direction="column" spacing={8} alignItems="center">
-        <Typography variant="h1" color="primary">
+      <Stack
+        direction="column"
+        spacing={2}
+        alignItems="center"
+        sx={{ marginBottom: "33vh", marginLeft: "10vh", marginRight: "10vh" }}
+      >
+        <Typography
+          variant="h1"
+          sx={{
+            fontWeight: "bold",
+            color: "red",
+            textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)",
+          }}
+        >
           Messengers of Lahar
         </Typography>
-        <Typography variant="h4" color="primary">
+        <Typography
+          variant="h4"
+          sx={{
+            color: "red",
+            textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)",
+          }}
+        >
           Live your desires and reverse the shame thrust on you by those fearful
           of exploration
         </Typography>
       </Stack>
-{/*  */}
+      {/*  */}
       <Box
         component="img"
         sx={{
