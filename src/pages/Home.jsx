@@ -1,5 +1,5 @@
 import { Box, Stack, Typography } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import homeBackground from "../img/homeBackground.jpg";
@@ -15,6 +15,16 @@ const Home = (props) => {
   const handleNavigationClick = () => {
     navigate(`/${randomPageId}`);
   };
+
+  //preload all images:
+  useEffect(() => {
+    listOfPages.forEach((page) => {
+      const img = new Image();
+      img.src = page.backgroundImage;
+      img.style.display = "none";
+      document.getElementById("hidden-container").appendChild(img);
+    });
+  }, [listOfPages]);
 
   const molPageStyle = {
     backgroundImage: `url('${homeBackground}')`,
