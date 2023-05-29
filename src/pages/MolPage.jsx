@@ -14,7 +14,7 @@ const MolPage = (props) => {
 
   const thisPage = listOfPages.find((page) => page.id === pageId);
 
-  const randomPageId = onGetRandomPageId(listOfPages);
+  const randomPageId = onGetRandomPageId(listOfPages, thisPage);
 
   const handleNavigationClick = () => {
     navigate(`/${randomPageId}`);
@@ -89,7 +89,7 @@ const MolPage = (props) => {
           cursor: "help",
           "&:hover": {
             transform: "scale(1.01)",
-            filter: "drop-shadow(0px 0px 8px rgba(255, 255, 255, 0.5))",
+            filter: "drop-shadow(0px 0px 12px rgba(255, 255, 255, 0.5))",
           },
         }}
         alt="a black and white lit candle"

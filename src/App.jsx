@@ -85,13 +85,19 @@ function App() {
     await deleteDoc(doc(db, "pages", id));
   };
 
-  const handleGetRandomPageId = (pagesArr) => {
+  const handleGetRandomPageId = (pagesArr, currentPage) => {
     const max = pagesArr.length;
     if (max > 0) {
-      const arrIndex = Math.floor(Math.random() * max);
-      const randomPageId = pagesArr[arrIndex].id;
+      let randomPageId;
+      do {
+        const arrIndex = Math.floor(Math.random() * max);
+        randomPageId = pagesArr[arrIndex].id;
+      } while (randomPageId === currentPage);
+
       return randomPageId;
-    } else return null;
+    } else {
+      return null;
+    }
   };
 
   return (
