@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Navigate,
+  useNavigate,
+} from "react-router-dom";
+
 import {
   collection,
   addDoc,
@@ -24,6 +31,7 @@ import PreviewPage from "./pages/PreviewPage";
 import Error from "./pages/Error";
 
 function App() {
+  console.log("app.jsx");
   const [mainPageList, setMainPageList] = useState([]);
   const [currentUser, setCurrentUser] = useState(null);
 
@@ -40,6 +48,7 @@ function App() {
 
   //query Firestore
   useEffect(() => {
+    console.log("query firestore")
     const unSubscribe = onSnapshot(
       collection(db, "pages"),
       (collectionSnapshot) => {
@@ -53,6 +62,7 @@ function App() {
           });
         });
         setMainPageList(pages);
+        localStorage.setItem("mainPageList", JSON.stringify(pages));
       },
       (error) => {
         console.log("Error:", error);
@@ -64,7 +74,7 @@ function App() {
   //protected route comp:
   const ProtectedRoute = ({ children }) => {
     if (!currentUser) {
-      console.log("not authenticated");
+      console.log("access denied: not authenticated");
       return <Navigate to="/" />;
     }
     return children;
@@ -118,6 +128,7 @@ function App() {
             element={
               <MolPage
                 listOfPages={mainPageList}
+                // restoreListOfPages={restoreMainPageListFromLocalStorage}
                 onGetRandomPageId={handleGetRandomPageId}
               />
             }
@@ -169,6 +180,7 @@ function App() {
           </Route>
 
           <Route path="*" element={<Error />} />
+
         </Routes>
       </BrowserRouter>
     </>
