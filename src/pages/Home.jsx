@@ -73,7 +73,7 @@ const Home = (props) => {
       <Box
         component="img"
         sx={{
-          height: "20%",
+          height: "25%",
           position: "fixed",
           bottom: 0,
           left: "15%",
@@ -94,7 +94,7 @@ const Home = (props) => {
       <Box
         component="img"
         sx={{
-          height: "20%",
+          height: "25%",
           position: "fixed",
           bottom: 0,
           right: "15%",
