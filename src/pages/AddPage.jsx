@@ -14,7 +14,7 @@ function AddPage(props) {
   const uploadImage = async () => {
     if (imageUpload == null) return null;
     const imageRef = ref(storage, `/${imageUpload.name + v4()}`);
-  
+
     try {
       const snapshot = await uploadBytes(imageRef, imageUpload);
       const url = await getDownloadURL(snapshot.ref);
@@ -31,6 +31,7 @@ function AddPage(props) {
     if (backgroundURL) {
       props.onNewPageCreation({
         pageText: event.target.pageText.value,
+        textPosition: event.target.textPosition.value,
         backgroundImage: backgroundURL,
         timeOpen: serverTimestamp(),
       });
@@ -49,6 +50,16 @@ function AddPage(props) {
           label="text to display on page"
           name="pageText"
           variant="outlined"
+        />
+
+        <TextField
+          label="text position: 0-95 (top of page to bottom)"
+          name="textPosition"
+          variant="outlined"
+          type="number"
+          min="0"
+          max="100"
+          defaultValue="47"
         />
 
         <input

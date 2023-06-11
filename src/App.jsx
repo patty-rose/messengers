@@ -45,12 +45,13 @@ function App() {
   //query Firestore
   useEffect(() => {
     const unSubscribe = onSnapshot(
-      collection(db, "pages"),
+      collection(db, "TESTpages"),
       (collectionSnapshot) => {
         const pages = [];
         collectionSnapshot.forEach((doc) => {
           pages.push({
             pageText: doc.data().pageText,
+            textPosition: doc.data().textPosition,
             backgroundImage: doc.data().backgroundImage,
             timestamp: serverTimestamp(),
             id: doc.id,
@@ -77,17 +78,17 @@ function App() {
 
   //CRUD handlers:
   const handleAddingNewPageToList = async (newPageData) => {
-    const docRef = await addDoc(collection(db, "pages"), newPageData);
+    const docRef = await addDoc(collection(db, "TESTpages"), newPageData);
     return docRef;
   };
 
   const handleEditingPageInList = async (pageToEdit) => {
-    const pageRef = doc(db, "pages", pageToEdit.id);
+    const pageRef = doc(db, "TESTpages", pageToEdit.id);
     await updateDoc(pageRef, pageToEdit);
   };
 
   const handleClickingDelete = async (id) => {
-    await deleteDoc(doc(db, "pages", id));
+    await deleteDoc(doc(db, "TESTpages", id));
   };
 
   const handleGetRandomPageId = (pagesArr, currentPage) => {
