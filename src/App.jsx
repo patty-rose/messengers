@@ -4,7 +4,6 @@ import {
   Routes,
   Route,
   Navigate,
-  useNavigate,
 } from "react-router-dom";
 
 import {
@@ -14,8 +13,6 @@ import {
   updateDoc,
   doc,
   deleteDoc,
-  query,
-  orderBy,
   serverTimestamp,
 } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
@@ -94,7 +91,7 @@ function App() {
   };
 
   const handleGetRandomPageId = (pagesArr, currentPage) => {
-    const max = pagesArr.length;
+    const max = pagesArr?.length;
     if (max > 0) {
       let randomPageId;
       do {
@@ -178,6 +175,7 @@ function App() {
           </Route>
 
           <Route path="*" element={<Error />} />
+
         </Routes>
       </BrowserRouter>
     </>

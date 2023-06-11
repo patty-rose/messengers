@@ -14,17 +14,21 @@ const MolPage = (props) => {
   //retrieve page list from local storage
   const jsonStoredPages = localStorage.getItem("mainPageList");
   const listOfPages = JSON.parse(jsonStoredPages);
-
-  const thisPage = listOfPages.find((page) => page.id === pageId);
-
-  const randomPageId = onGetRandomPageId(listOfPages, pageId);
+  const thisPage = listOfPages?.find((page) => page.id === pageId);
+  const randomPageId = onGetRandomPageId(listOfPages, pageId);;
+  
+  useEffect(()=>{
+    if (!listOfPages){
+      navigate(`/`);
+    }
+  }, [])
 
   const handleNavigationClick = () => {
     navigate(`/mol/${randomPageId}`);
   };
 
   const molPageStyle = {
-    backgroundImage: `url('${thisPage.backgroundImage}')`,
+    backgroundImage: `url('${thisPage?.backgroundImage}')`,
     height: "100vh",
     backgroundSize: "cover",
     backgroundRepeat: "no-repeat",
@@ -53,7 +57,7 @@ const MolPage = (props) => {
             fontSize: isMobile ? "7vw" : undefined,
           }}
         >
-          {thisPage.pageText}
+          {thisPage?.pageText}
         </Typography>
       </Stack>
 
