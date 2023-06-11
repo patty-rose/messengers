@@ -13,7 +13,7 @@ const Home = (props) => {
   const randomPageId = onGetRandomPageId(listOfPages);
 
   const handleNavigationClick = () => {
-    navigate(`/${randomPageId}`);
+    navigate(`/mol/${randomPageId}`);
   };
 
   //preload all images:

@@ -31,7 +31,6 @@ import PreviewPage from "./pages/PreviewPage";
 import Error from "./pages/Error";
 
 function App() {
-  console.log("app.jsx");
   const [mainPageList, setMainPageList] = useState([]);
   const [currentUser, setCurrentUser] = useState(null);
 
@@ -48,7 +47,6 @@ function App() {
 
   //query Firestore
   useEffect(() => {
-    console.log("query firestore")
     const unSubscribe = onSnapshot(
       collection(db, "pages"),
       (collectionSnapshot) => {
@@ -124,7 +122,7 @@ function App() {
             }
           />
           <Route
-            path="/:pageId"
+            path="/mol/:pageId"
             element={
               <MolPage
                 listOfPages={mainPageList}
@@ -180,7 +178,6 @@ function App() {
           </Route>
 
           <Route path="*" element={<Error />} />
-
         </Routes>
       </BrowserRouter>
     </>

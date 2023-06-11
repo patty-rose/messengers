@@ -6,7 +6,6 @@ import candle from "../img/candle.png";
 import hand from "../img/hand.png";
 
 const MolPage = (props) => {
-  console.log("molpage");
   const { onGetRandomPageId } = props;
   const { pageId } = useParams();
   const navigate = useNavigate();
@@ -21,7 +20,7 @@ const MolPage = (props) => {
   const randomPageId = onGetRandomPageId(listOfPages, pageId);
 
   const handleNavigationClick = () => {
-    navigate(`/${randomPageId}`);
+    navigate(`/mol/${randomPageId}`);
   };
 
   const molPageStyle = {

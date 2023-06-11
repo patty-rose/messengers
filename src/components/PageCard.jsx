@@ -22,7 +22,7 @@ export function PageCard(props) {
               <IconButton aria-label="view">
                 <Link
                   style={{ textDecoration: "none", color: "#4F5361" }}
-                  to={`/${id}`}
+                  to={`/mol/${id}`}
                   className="btn"
                 >
                   <PreviewIcon />
