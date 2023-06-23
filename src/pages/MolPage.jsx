@@ -39,22 +39,23 @@ const MolPage = (props) => {
     <Box
       sx={{
         display: "flex",
-
         justifyContent: "center",
         ...molPageStyle,
       }}
     >
-      {/* spacing={8}  */}
       <Stack direction="column" alignItems="center">
         <Typography
           variant="h3"
           sx={{
             color: "red",
-            textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)",
+            // textShadow: "0px 0px 2px rgba(255, 255, 255, 1)",
+            // // filter: "drop-shadow(0px 0px 8px rgba(255, 255, 255, 0.5))",
             marginLeft: isMobile ? "5vh" : "10vh",
             marginRight: isMobile ? "5vh" : "10vh",
             marginTop: thisPage.textPosition ? `${thisPage.textPosition}vh` : "47vh",
             fontSize: isMobile ? "7vw" : undefined,
+            fontWeight: "bold",
+            letterSpacing: "0.01em",
           }}
         >
           {thisPage?.pageText}

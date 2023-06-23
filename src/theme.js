@@ -24,13 +24,13 @@ const theme = createTheme({
     },
   },
   typography: {
-    fontFamily: `"Times New Roman", Times, serif`,
+    fontFamily: `'La Belle Aurore', cursive`,
     h1: {
-      fontFamily: `"Times New Roman", Times, serif`,
+      fontFamily: `'La Belle Aurore', cursive`,
       fontWeight: 600,
     },
     h4: {
-      fontFamily: `"Times New Roman", Times, serif`,
+      fontFamily: `'La Belle Aurore', cursive`,
       fontWeight: 500,
     },
   },

@@ -1,4 +1,4 @@
-import { Box, Stack, Typography } from "@mui/material";
+import { Box, Stack, Typography, useMediaQuery } from "@mui/material";
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
@@ -9,6 +9,7 @@ import hand from "../img/hand.png";
 const Home = (props) => {
   const { listOfPages, onGetRandomPageId } = props;
   const navigate = useNavigate();
+  const isMobile = useMediaQuery("(max-width: 600px)");
 
   const randomPageId = onGetRandomPageId(listOfPages);
 
@@ -62,14 +63,14 @@ const Home = (props) => {
           variant="h4"
           sx={{
             color: "red",
-            textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)",
+            fontWeight: "bold",
+            letterSpacing: "0.08em",
           }}
         >
           Live your desires and reverse the shame thrust on you by those fearful
           of exploration
         </Typography>
       </Stack>
-      {/*  */}
       <Box
         component="img"
         sx={{
@@ -112,6 +113,19 @@ const Home = (props) => {
         }}
       />
       <div id="hidden-container"></div>
+      <Box
+        sx={{
+          position: "fixed",
+          bottom: "1rem",
+          left: "50%",
+          transform: "translateX(-50%)",
+          textAlign: "center",
+          color: "white",
+          fontSize: "2rem",
+          fontWeight: "bold",
+        }}
+      >
+      </Box>
     </Box>
   );
 };
