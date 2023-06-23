@@ -41,8 +41,6 @@ function AddPage(props) {
       });
       navigate("/admin/dashboard");
     } else {
-      // Handle case when image upload fails
-      // Add appropriate error handling logic here
       console.error("Image upload failed.");
     }
   };

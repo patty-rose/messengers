@@ -10,14 +10,16 @@ function EditPage(props) {
   const thisPage = listOfPages.find((page) => page.id === pageId);
   const [formData, setFormData] = useState({
     pageText: thisPage.pageText,
+    textPosition: thisPage.textPosition,
     backgroundImage: thisPage.backgroundImage,
   });
 
   function handleEditPageSubmission(event) {
     event.preventDefault();
     props.onEditPage({
-      pageText: event.target.pageText.value,
-      backgroundImage: event.target.backgroundImage.value,
+      pageText: formData.pageText,
+      textPosition: formData.textPosition,
+      backgroundImage: formData.backgroundImage,
       id: thisPage.id,
     });
     navigate("/admin/dashboard");
@@ -25,41 +27,38 @@ function EditPage(props) {
 
   return (
     <React.Fragment>
-        <form onSubmit={handleEditPageSubmission}>
-        <TextField 
-          label="text to display on page" 
+      <form onSubmit={handleEditPageSubmission}>
+        <TextField
+          label="text to display on page"
           name="pageText"
           variant="outlined"
           defaultValue={formData.pageText}
           onChange={(e) => {
             setFormData({ ...formData, pageText: e.target.value });
-          }} />
-        <TextField 
-          label="Background Image URL" 
+          }}
+        />
+        <TextField
+          label="text position: 0-95 (top of page to bottom)"
+          name="textPosition"
+          variant="outlined"
+          type="number"
+          min="0"
+          max="100"
+          defaultValue={formData.textPosition}
+          onChange={(e) => {
+            setFormData({ ...formData, textPosition: e.target.value });
+          }}
+        />
+        <TextField
+          label="Background Image URL"
           name="backgroundImage"
           variant="outlined"
-          defaultValue={formData.backgroundImage} 
+          defaultValue={formData.backgroundImage}
           onChange={(e) => {
             setFormData({ ...formData, backgroundImage: e.target.value });
-          }} />
-
-        {/* <label>text to display on page</label>
-        <input
-          type='text'
-          name='pageText'
-          defaultValue={formData.pageText}
-          onChange={(e) => {
-            setFormData({ ...formData, pageText: e.target.value });
-          }} />
-        <label>Background Image URL</label>
-        <input
-          type='text'
-          name='backgroundImage'
-          defaultValue={formData.backgroundImage} 
-          onChange={(e) => {
-            setFormData({ ...formData, backgroundImage: e.target.value });
-          }}/> */}
-        <button type='submit'>Edit</button>
+          }}
+        />
+        <button type="submit">Edit</button>
       </form>
     </React.Fragment>
   );
