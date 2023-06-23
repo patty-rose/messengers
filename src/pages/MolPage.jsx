@@ -14,17 +14,20 @@ const MolPage = (props) => {
   //retrieve page list from local storage
   const jsonStoredPages = localStorage.getItem("mainPageList");
   const listOfPages = JSON.parse(jsonStoredPages);
-
-  const thisPage = listOfPages.find((page) => page.id === pageId);
-
+  const thisPage = listOfPages?.find((page) => page.id === pageId);
   const randomPageId = onGetRandomPageId(listOfPages, pageId);
+  useEffect(()=>{
+    if (!listOfPages){
+      navigate(`/`);
+    }
+  }, [])
 
   const handleNavigationClick = () => {
     navigate(`/mol/${randomPageId}`);
   };
 
   const molPageStyle = {
-    backgroundImage: `url('${thisPage.backgroundImage}')`,
+    backgroundImage: `url('${thisPage?.backgroundImage}')`,
     height: "100vh",
     backgroundSize: "cover",
     backgroundRepeat: "no-repeat",
@@ -36,12 +39,13 @@ const MolPage = (props) => {
     <Box
       sx={{
         display: "flex",
-        alignItems: "center",
+
         justifyContent: "center",
         ...molPageStyle,
       }}
     >
-      <Stack direction="column" spacing={8} alignItems="center">
+      {/* spacing={8}  */}
+      <Stack direction="column" alignItems="center">
         <Typography
           variant="h3"
           sx={{
@@ -49,11 +53,11 @@ const MolPage = (props) => {
             textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)",
             marginLeft: isMobile ? "5vh" : "10vh",
             marginRight: isMobile ? "5vh" : "10vh",
-            marginBottom: isMobile ? "70vh" : "0",
+            marginTop: thisPage.textPosition ? `${thisPage.textPosition}vh` : "47vh",
             fontSize: isMobile ? "7vw" : undefined,
           }}
         >
-          {thisPage.pageText}
+          {thisPage?.pageText}
         </Typography>
       </Stack>
 

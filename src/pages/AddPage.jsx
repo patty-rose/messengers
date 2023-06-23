@@ -13,12 +13,13 @@ function AddPage(props) {
 
   const uploadImage = async () => {
     if (imageUpload == null) return null;
-    const imageRef = ref(storage, `/${imageUpload.name + v4()}`);
-  
+    const imageRefName = imageUpload.name + v4();
+    const imageRef = ref(storage, `/${imageRefName}`);
     try {
       const snapshot = await uploadBytes(imageRef, imageUpload);
       const url = await getDownloadURL(snapshot.ref);
-      return url;
+      const imageData = {imageRefName, url};
+      return imageData;
     } catch (error) {
       console.error("Error uploading image:", error);
       return null;
@@ -27,17 +28,19 @@ function AddPage(props) {
 
   const handleAddPageSubmission = async (event) => {
     event.preventDefault();
-    const backgroundURL = await uploadImage();
+    const imageObj = await uploadImage();
+    const backgroundURL = imageObj.url;
+    const imageRefName = imageObj.imageRefName;
     if (backgroundURL) {
       props.onNewPageCreation({
         pageText: event.target.pageText.value,
+        textPosition: event.target.textPosition.value,
         backgroundImage: backgroundURL,
+        imageRefName: imageRefName,
         timeOpen: serverTimestamp(),
       });
       navigate("/admin/dashboard");
     } else {
-      // Handle case when image upload fails
-      // Add appropriate error handling logic here
       console.error("Image upload failed.");
     }
   };
@@ -49,6 +52,16 @@ function AddPage(props) {
           label="text to display on page"
           name="pageText"
           variant="outlined"
+        />
+
+        <TextField
+          label="text position: 0-95 (top of page to bottom)"
+          name="textPosition"
+          variant="outlined"
+          type="number"
+          min="0"
+          max="100"
+          defaultValue="47"
         />
 
         <input
