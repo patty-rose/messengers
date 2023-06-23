@@ -15,8 +15,7 @@ const MolPage = (props) => {
   const jsonStoredPages = localStorage.getItem("mainPageList");
   const listOfPages = JSON.parse(jsonStoredPages);
   const thisPage = listOfPages?.find((page) => page.id === pageId);
-  const randomPageId = onGetRandomPageId(listOfPages, pageId);;
-  console.log(thisPage);
+  const randomPageId = onGetRandomPageId(listOfPages, pageId);
   useEffect(()=>{
     if (!listOfPages){
       navigate(`/`);

@@ -10,7 +10,7 @@ import { Box } from "@mui/system";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 
 export function PageCard(props) {
-  const { pageText, backgroundImage, id, handleClickingDelete } =
+  const { pageText, backgroundImage, imageRefName, id, handleClickingDelete } =
     props;
 
   return (
@@ -41,7 +41,7 @@ export function PageCard(props) {
                     style={{ textDecoration: "none", color: "#4F5361" }}
                     aria-label="edit"
                     onClick={() => {
-                      handleClickingDelete(id);
+                      handleClickingDelete(id, imageRefName);
                     }}
                   >
                     <DeleteForeverIcon />
@@ -59,6 +59,7 @@ export function PageCard(props) {
 PageCard.propTypes = {
   pageText: PropTypes.string,
   backgroundImage: PropTypes.string,
+  imageRefName: PropTypes.string,
   timestamp: PropTypes.object,
   id: PropTypes.string,
   handleClickingDelete: PropTypes.func

@@ -1,10 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-  Navigate,
-} from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 import {
   collection,
@@ -16,7 +11,7 @@ import {
   serverTimestamp,
 } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { db } from "./firebase.js";
+import { db, storage } from "./firebase.js";
 import SignIn from "./pages/SignIn";
 import Home from "./pages/Home";
 import MolPage from "./pages/MolPage";
@@ -24,8 +19,8 @@ import SharedLayout from "./components/SharedLayout";
 import Dashboard from "./pages/Dashboard";
 import AddPage from "./pages/AddPage";
 import EditPage from "./pages/EditPage";
-import PreviewPage from "./pages/PreviewPage";
 import Error from "./pages/Error";
+import { deleteObject, ref } from "firebase/storage";
 
 function App() {
   const [mainPageList, setMainPageList] = useState([]);
@@ -88,19 +83,28 @@ function App() {
     await updateDoc(pageRef, pageToEdit);
   };
 
-  const handleClickingDelete = async (id) => {
+  const handleClickingDelete = async (id, imageRefName) => {
     await deleteDoc(doc(db, "TESTpages", id));
+    const imageRef = ref(storage, imageRefName);
+    deleteObject(imageRef)
+      .then(() => {
+        console.log(`${imageRefName} successfully deleted from storage`);
+      })
+      .catch((error) => {
+        console.log(`Error: unsuccessful image deletion`);
+      });
   };
 
   const handleGetRandomPageId = (pagesArr, currentPage) => {
     const max = pagesArr?.length;
-    if (max > 0) {
+    if (max === 1){
+      return pagesArr[0].id;
+    } else if (max > 1) {
       let randomPageId;
       do {
         const arrIndex = Math.floor(Math.random() * max);
         randomPageId = pagesArr[arrIndex].id;
       } while (randomPageId === currentPage);
-
       return randomPageId;
     } else {
       return null;
@@ -125,7 +129,6 @@ function App() {
             element={
               <MolPage
                 listOfPages={mainPageList}
-                // restoreListOfPages={restoreMainPageListFromLocalStorage}
                 onGetRandomPageId={handleGetRandomPageId}
               />
             }
@@ -165,19 +168,9 @@ function App() {
                 </ProtectedRoute>
               }
             />
-
-            <Route
-              path="preview/:pageId"
-              element={
-                <ProtectedRoute>
-                  <PreviewPage pageList={mainPageList} />
-                </ProtectedRoute>
-              }
-            />
           </Route>
 
           <Route path="*" element={<Error />} />
-
         </Routes>
       </BrowserRouter>
     </>

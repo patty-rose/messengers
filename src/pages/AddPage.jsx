@@ -31,7 +31,6 @@ function AddPage(props) {
     const imageObj = await uploadImage();
     const backgroundURL = imageObj.url;
     const imageRefName = imageObj.imageRefName;
-    console.log(imageRefName);
     if (backgroundURL) {
       props.onNewPageCreation({
         pageText: event.target.pageText.value,

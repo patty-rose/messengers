@@ -42,6 +42,7 @@ const Dashboard = (props) => {
               <Page
                 pageText={page.pageText}
                 backgroundImage={page.backgroundImage}
+                imageRefName={page.imageRefName}
                 timestamp={page.timestamp}
                 id={page.id}
                 key={page.id}
