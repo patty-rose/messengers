@@ -47,9 +47,8 @@ const MolPage = (props) => {
         <Typography
           variant="h3"
           sx={{
+            fontFamily: `'La Belle Aurore', cursive`,
             color: "red",
-            // textShadow: "0px 0px 2px rgba(255, 255, 255, 1)",
-            // // filter: "drop-shadow(0px 0px 8px rgba(255, 255, 255, 0.5))",
             marginLeft: isMobile ? "5vh" : "10vh",
             marginRight: isMobile ? "5vh" : "10vh",
             marginTop: thisPage.textPosition ? `${thisPage.textPosition}vh` : "47vh",

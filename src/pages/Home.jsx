@@ -52,6 +52,7 @@ const Home = (props) => {
         <Typography
           variant="h1"
           sx={{
+            fontFamily: `'La Belle Aurore', cursive`,
             fontWeight: "bold",
             color: "red",
             textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)",
@@ -62,6 +63,7 @@ const Home = (props) => {
         <Typography
           variant="h4"
           sx={{
+            fontFamily: `'La Belle Aurore', cursive`,
             color: "red",
             fontWeight: "bold",
             letterSpacing: "0.08em",

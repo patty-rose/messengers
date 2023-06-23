@@ -24,13 +24,13 @@ const theme = createTheme({
     },
   },
   typography: {
-    fontFamily: `'La Belle Aurore', cursive`,
+    fontFamily: `font-family: Verdana, Arial, Helvetica, sans-serif`,
     h1: {
-      fontFamily: `'La Belle Aurore', cursive`,
+      fontFamily: `font-family: Verdana, Arial, Helvetica, sans-serif`,
       fontWeight: 600,
     },
     h4: {
-      fontFamily: `'La Belle Aurore', cursive`,
+      fontFamily: `font-family: Verdana, Arial, Helvetica, sans-serif`,
       fontWeight: 500,
     },
   },
