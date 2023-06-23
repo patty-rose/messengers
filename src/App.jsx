@@ -53,6 +53,7 @@ function App() {
             pageText: doc.data().pageText,
             textPosition: doc.data().textPosition,
             backgroundImage: doc.data().backgroundImage,
+            imageRefName: doc.data().imageRefName,
             timestamp: serverTimestamp(),
             id: doc.id,
           });
