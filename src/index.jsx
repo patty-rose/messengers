@@ -1,4 +1,4 @@
-import 'typeface-la-belle-aurore';
+import "@fontsource/special-elite";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";

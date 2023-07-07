@@ -52,10 +52,12 @@ const Home = (props) => {
         <Typography
           variant="h1"
           sx={{
-            fontFamily: `'La Belle Aurore', cursive`,
+            fontFamily: `Special Elite`,
             fontWeight: "bold",
+            textAlign: "center",
             color: "red",
             textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)",
+            marginBottom: "10vh",
           }}
         >
           Messengers of Lahar
@@ -63,8 +65,9 @@ const Home = (props) => {
         <Typography
           variant="h4"
           sx={{
-            fontFamily: `'La Belle Aurore', cursive`,
+            fontFamily: `Special Elite`,
             color: "red",
+            textAlign: "center",
             fontWeight: "bold",
             letterSpacing: "0.08em",
           }}
@@ -93,6 +96,30 @@ const Home = (props) => {
           handleNavigationClick();
         }}
       />
+
+      <Box
+        sx={{
+          position: "fixed",
+          bottom: "1rem",
+          left: "50%",
+          transform: "translateX(-50%)",
+          textAlign: "center",
+          color: "white",
+          fontSize: "2rem",
+          fontWeight: "bold",
+        }}
+      >
+        <a
+          // href="mailto:MessengersOfLahar@gmx.com"
+          style={{
+            fontFamily: `Special Elite`,
+            color: "white",
+            textDecoration: "none",
+          }}
+        >
+          MessengersOfLahar@gmx.com
+        </a>
+      </Box>
 
       <Box
         component="img"
@@ -126,8 +153,7 @@ const Home = (props) => {
           fontSize: "2rem",
           fontWeight: "bold",
         }}
-      >
-      </Box>
+      ></Box>
     </Box>
   );
 };

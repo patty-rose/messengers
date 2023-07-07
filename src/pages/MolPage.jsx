@@ -47,7 +47,7 @@ const MolPage = (props) => {
         <Typography
           variant="h3"
           sx={{
-            fontFamily: `'La Belle Aurore', cursive`,
+            fontFamily: `Special Elite`,
             color: "red",
             marginLeft: isMobile ? "5vh" : "10vh",
             marginRight: isMobile ? "5vh" : "10vh",
