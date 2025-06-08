@@ -100,24 +100,32 @@ const Home = (props) => {
       <Box
         sx={{
           position: "fixed",
-          bottom: "1rem",
+          top: isMobile ? "1rem" : "auto",
+          bottom: isMobile ? "auto" : "1rem",
           left: "50%",
           transform: "translateX(-50%)",
           textAlign: "center",
           color: "white",
-          fontSize: "2rem",
+          fontSize: isMobile ? "1rem" : "2rem",
           fontWeight: "bold",
+          px: isMobile ? 2 : 0,
+          zIndex: 10,
+          maxWidth: isMobile ? "90vw" : "auto",
+          overflowWrap: "break-word",
+          pointerEvents: "auto", // so it remains clickable
         }}
       >
         <a
-          // href="mailto:MessengersOfLahar@gmx.com"
+          href="mailto:messengersoflahar@zohomail.com"
           style={{
             fontFamily: `Special Elite`,
             color: "white",
             textDecoration: "none",
+            display: "inline-block",
+            width: "100%",
           }}
         >
-          MessengersOfLahar@gmx.com
+          messengersoflahar@zohomail.com
         </a>
       </Box>
 

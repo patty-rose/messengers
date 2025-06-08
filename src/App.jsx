@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-
+import AppWrapper from "./AppWrapper";
 import {
   collection,
   addDoc,
@@ -9,6 +9,8 @@ import {
   doc,
   deleteDoc,
   serverTimestamp,
+  query, 
+  orderBy,
 } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { db, storage } from "./firebase.js";
@@ -26,6 +28,13 @@ function App() {
   const [mainPageList, setMainPageList] = useState([]);
   const [currentUser, setCurrentUser] = useState(null);
 
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = "auto"; // cleanup if needed
+    };
+  }, []);
+  
   //Auth object & observer:
   const auth = getAuth();
 
@@ -39,8 +48,10 @@ function App() {
 
   //query Firestore
   useEffect(() => {
+    const pagesQuery = query(collection(db, "pages"), orderBy("timeOpen", "desc"));
+
     const unSubscribe = onSnapshot(
-      collection(db, "pages"),
+      pagesQuery,
       (collectionSnapshot) => {
         const pages = [];
         collectionSnapshot.forEach((doc) => {
@@ -50,6 +61,7 @@ function App() {
             backgroundImage: doc.data().backgroundImage,
             imageRefName: doc.data().imageRefName,
             timestamp: serverTimestamp(),
+            timeOpen: doc.data().timeOpen,
             id: doc.id,
           });
         });
@@ -80,7 +92,10 @@ function App() {
 
   const handleEditingPageInList = async (pageToEdit) => {
     const pageRef = doc(db, "pages", pageToEdit.id);
-    await updateDoc(pageRef, pageToEdit);
+    await updateDoc(pageRef, {
+      ...pageToEdit,
+      timeOpen: serverTimestamp(),
+    });
   };
 
   const handleClickingDelete = async (id, imageRefName) => {
@@ -114,64 +129,66 @@ function App() {
   return (
     <>
       <BrowserRouter>
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <Home
-                listOfPages={mainPageList}
-                onGetRandomPageId={handleGetRandomPageId}
+        <AppWrapper>
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <Home
+                  listOfPages={mainPageList}
+                  onGetRandomPageId={handleGetRandomPageId}
+                />
+              }
+            />
+            <Route
+              path="/mol/:pageId"
+              element={
+                <MolPage
+                  listOfPages={mainPageList}
+                  onGetRandomPageId={handleGetRandomPageId}
+                />
+              }
+            />
+
+            <Route path="/admin" element={<SharedLayout user={currentUser} />}>
+              <Route index element={<SignIn />} />
+              <Route
+                path="dashboard"
+                element={
+                  <ProtectedRoute>
+                    <Dashboard
+                      listOfPages={mainPageList}
+                      onClickingDelete={handleClickingDelete}
+                    />
+                  </ProtectedRoute>
+                }
               />
-            }
-          />
-          <Route
-            path="/mol/:pageId"
-            element={
-              <MolPage
-                listOfPages={mainPageList}
-                onGetRandomPageId={handleGetRandomPageId}
+
+              <Route
+                path="addPage"
+                element={
+                  <ProtectedRoute>
+                    <AddPage onNewPageCreation={handleAddingNewPageToList} />
+                  </ProtectedRoute>
+                }
               />
-            }
-          />
 
-          <Route path="/admin" element={<SharedLayout user={currentUser} />}>
-            <Route index element={<SignIn />} />
-            <Route
-              path="dashboard"
-              element={
-                <ProtectedRoute>
-                  <Dashboard
-                    listOfPages={mainPageList}
-                    onClickingDelete={handleClickingDelete}
-                  />
-                </ProtectedRoute>
-              }
-            />
+              <Route
+                path="edit/:pageId"
+                element={
+                  <ProtectedRoute>
+                    <EditPage
+                      listOfPages={mainPageList}
+                      onEditPage={handleEditingPageInList}
+                    />
+                  </ProtectedRoute>
+                }
+              />
+            </Route>
 
-            <Route
-              path="addPage"
-              element={
-                <ProtectedRoute>
-                  <AddPage onNewPageCreation={handleAddingNewPageToList} />
-                </ProtectedRoute>
-              }
-            />
-
-            <Route
-              path="edit/:pageId"
-              element={
-                <ProtectedRoute>
-                  <EditPage
-                    listOfPages={mainPageList}
-                    onEditPage={handleEditingPageInList}
-                  />
-                </ProtectedRoute>
-              }
-            />
-          </Route>
-
-          <Route path="*" element={<Error />} />
-        </Routes>
+            <Route path="*" element={<Error />} />
+          </Routes>
+        </AppWrapper>
       </BrowserRouter>
     </>
   );

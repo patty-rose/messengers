@@ -1,15 +1,21 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { useParams, useNavigate } from "react-router-dom";
-import { Box, Stack, Typography, useMediaQuery } from "@mui/material";
+import { useLocation, useParams, useNavigate } from "react-router-dom";
+import { Button, useTheme, Box, Stack, Typography, useMediaQuery } from "@mui/material";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import candle from "../img/candle.png";
 import hand from "../img/hand.png";
 
 const MolPage = (props) => {
+  const theme = useTheme();
   const { onGetRandomPageId } = props;
   const { pageId } = useParams();
+  const location = useLocation();
   const navigate = useNavigate();
   const isMobile = useMediaQuery("(max-width: 600px)");
+
+  // true when previewing pages from admin dashboard
+  const fromDashboard = location.state?.fromDashboard;
 
   //retrieve page list from local storage
   const jsonStoredPages = localStorage.getItem("mainPageList");
@@ -22,28 +28,68 @@ const MolPage = (props) => {
     }
   }, [])
 
+  // useEffect(() => {
+  //   // Disable scroll on body
+  //   document.body.style.overflow = "hidden";
+  //   // For iOS overscroll bounce fix, also disable touchmove
+  //   document.body.style.position = "fixed";
+
+  //   return () => {
+  //     // Re-enable scroll on body when unmounting
+  //     document.body.style.overflow = "";
+  //     document.body.style.position = "";
+  //   };
+  // }, []);
+
   const handleNavigationClick = () => {
     navigate(`/mol/${randomPageId}`);
   };
 
+  const handleBackToDashboard = () => {
+    navigate(`/admin/dashboard`);
+  };
+
   const molPageStyle = {
+    display: "flex",
+    justifyContent: "center",
     backgroundImage: `url('${thisPage?.backgroundImage}')`,
     height: "100vh",
     backgroundSize: "cover",
     backgroundRepeat: "no-repeat",
     backgroundPosition: "center",
     backgroundColor: "black",
+    overflow: "hidden", 
+    overscrollBehavior: "contain",
   };
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        justifyContent: "center",
-        ...molPageStyle,
-      }}
-    >
+    <Box sx={molPageStyle}>
       <Stack direction="column" alignItems="center">
+        {fromDashboard && (
+          <Button
+            variant="contained"
+            color="primary"
+            startIcon={<ArrowBackIcon />}
+            onClick={() => {
+              if (location.state?.fromDashboard) {
+                navigate("/admin/dashboard");
+              } else {
+                navigate(-1);
+              }
+            }}
+            sx={{
+              position: "fixed",
+              top: 16,
+              left: 16,
+              zIndex: 10,
+              fontSize: "1.1rem",
+              padding: "8px 16px",
+              textTransform: "none",
+            }}
+          >
+            Back to Dashboard
+          </Button>
+        )}
         <Typography
           variant="h3"
           sx={{

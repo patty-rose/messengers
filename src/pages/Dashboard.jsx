@@ -17,15 +17,21 @@ const Dashboard = (props) => {
           action={
             <IconButton aria-label="add">
               <Link
-                style={{ textDecoration: "none", color: "#4F5361" }}
                 to="/admin/addPage"
                 className="btn"
+                style={{
+                  textDecoration: "none",
+                  color: "#4F5361",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "4px", // space between icon and text
+                }}
               >
                 <AddCircleIcon />
+                <span style={{ fontSize: "0.9rem" }}>Add Page</span>
               </Link>
             </IconButton>
           }
-          title="Your pages:"
           // subheader= {props.error ? error : "add, view, and edit your pages"}
         />
 
@@ -44,9 +50,11 @@ const Dashboard = (props) => {
                 backgroundImage={page.backgroundImage}
                 imageRefName={page.imageRefName}
                 timestamp={page.timestamp}
+                timeOpen={page.timeOpen}
                 id={page.id}
                 key={page.id}
                 handleClickingDelete={props.onClickingDelete}
+                fromDashboard={true}
               />
             ))}
           </Grid>

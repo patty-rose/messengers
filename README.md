@@ -18,7 +18,7 @@ React website commissioned by a literary and visual artist. Includes admin funct
 --------------------------------------------------------
 *   React
 *   Javascript
-*   Firebase for authentication and hosting: [https://nvc2-e6e76.web.app/](https://nvc2-e6e76.web.app/)
+*   Firebase for authentication and hosting
 *   Material UI
 *   React Router
 *   NPM

@@ -189,7 +189,7 @@ export const Navbar = (props) => {
                   ml: 1,
                 }}
               >
-                Messengers of Lahar ADMIN
+                Messengers of Lahar
               </Typography>
             </IconButton>
           </Box>
