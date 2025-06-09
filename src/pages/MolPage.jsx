@@ -28,19 +28,6 @@ const MolPage = (props) => {
     }
   }, [])
 
-  // useEffect(() => {
-  //   // Disable scroll on body
-  //   document.body.style.overflow = "hidden";
-  //   // For iOS overscroll bounce fix, also disable touchmove
-  //   document.body.style.position = "fixed";
-
-  //   return () => {
-  //     // Re-enable scroll on body when unmounting
-  //     document.body.style.overflow = "";
-  //     document.body.style.position = "";
-  //   };
-  // }, []);
-
   const handleNavigationClick = () => {
     navigate(`/mol/${randomPageId}`);
   };

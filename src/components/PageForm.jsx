@@ -12,23 +12,33 @@ function PageForm({ initialData = {}, onSubmit }) {
     textPosition: initialData.textPosition || "47",
     backgroundImage: initialData.backgroundImage || "",
   });
+
   const [imageUpload, setImageUpload] = useState(null);
+  const [manualImageURL, setManualImageURL] = useState(
+    initialData.backgroundImage || ""
+  );
+
   const navigate = useNavigate();
 
   const handleFileUpload = async () => {
-    if (!imageUpload) {
+    // PRIORITY: Uploaded image wins over URL
+    if (imageUpload) {
+      const imageRefName = imageUpload.name + v4();
+      const imageRef = ref(storage, `/${imageRefName}`);
+      const snapshot = await uploadBytes(imageRef, imageUpload);
+      const url = await getDownloadURL(snapshot.ref);
+      return { url, imageRefName };
+    } else if (manualImageURL) {
       return {
-        url: formData.backgroundImage,
-        imageRefName: initialData.imageRefName || "",
+        url: manualImageURL,
+        imageRefName: "", // no Firebase reference for external URL
+      };
+    } else {
+      return {
+        url: "",
+        imageRefName: "",
       };
     }
-
-    const imageRefName = imageUpload.name + v4();
-    const imageRef = ref(storage, `/${imageRefName}`);
-    const snapshot = await uploadBytes(imageRef, imageUpload);
-    const url = await getDownloadURL(snapshot.ref);
-
-    return { url, imageRefName };
   };
 
   const handleSubmit = async (e) => {
@@ -87,14 +97,18 @@ function PageForm({ initialData = {}, onSubmit }) {
         fullWidth
       />
 
-      {formData.backgroundImage && (
+      {(imageUpload || manualImageURL || formData.backgroundImage) && (
         <Box mt={2}>
           <Typography variant="body2" sx={{ mb: 1 }}>
-            Current background image:
+            Image preview:
           </Typography>
           <img
-            src={formData.backgroundImage}
-            alt="Existing background"
+            src={
+              imageUpload
+                ? URL.createObjectURL(imageUpload)
+                : manualImageURL || formData.backgroundImage
+            }
+            alt="Selected background"
             style={{
               width: "100%",
               maxHeight: "300px",
@@ -103,23 +117,25 @@ function PageForm({ initialData = {}, onSubmit }) {
               marginBottom: "1rem",
             }}
           />
-          <Typography variant="subtitle2" sx={{ mb: 1, fontWeight: "bold" }}>
-            An image already exists. You can upload a new one to replace it:
-          </Typography>
         </Box>
       )}
 
-      {!formData.backgroundImage && (
-        <Typography variant="body2" sx={{ mt: 1 }}>
-          Upload a background image:
-        </Typography>
-      )}
-
+      <Typography variant="subtitle2">Upload an image:</Typography>
       <input
         type="file"
         accept="image/*"
-        onChange={(e) => setImageUpload(e.target.files[0])}
+        onChange={(e) => {
+          setImageUpload(e.target.files[0]);
+        }}
         style={{ marginBottom: "1rem" }}
+      />
+
+      <Typography variant="subtitle2">Or enter an image URL:</Typography>
+      <TextField
+        label="Image URL"
+        value={manualImageURL}
+        onChange={(e) => setManualImageURL(e.target.value)}
+        fullWidth
       />
 
       <Button type="submit" variant="contained" color="primary">
