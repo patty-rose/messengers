@@ -16,6 +16,15 @@ const Home = (props) => {
     navigate(`/mol/${randomPageId}`);
   };
 
+  useEffect(() => {
+    const link = document.createElement("link");
+    link.rel = "preload";
+    link.as = "image";
+    link.href = "/homeBackground.jpg";
+    document.head.appendChild(link);
+    return () => document.head.removeChild(link);
+  }, []);
+
   //preload all images:
   useEffect(() => {
     listOfPages.forEach((page) => {
