@@ -22,11 +22,19 @@ const MolPage = (props) => {
   const listOfPages = JSON.parse(jsonStoredPages);
   const thisPage = listOfPages?.find((page) => page.id === pageId);
   const randomPageId = onGetRandomPageId(listOfPages, pageId);
+  const [bgLoaded, setBgLoaded] = useState(false);
+
   useEffect(()=>{
     if (!listOfPages){
       navigate(`/`);
+      return;
     }
-  }, [])
+    if (thisPage?.backgroundImage) {
+      const img = new Image();
+      img.src = thisPage.backgroundImage;
+      img.onload = () => setBgLoaded(true);
+    }
+  }, [pageId])
 
   const handleNavigationClick = () => {
     navigate(`/mol/${randomPageId}`);
@@ -39,13 +47,13 @@ const MolPage = (props) => {
   const molPageStyle = {
     display: "flex",
     justifyContent: "center",
-    backgroundImage: `url('${thisPage?.backgroundImage}')`,
+    backgroundImage: bgLoaded ? `url('${thisPage?.backgroundImage}')` : "none",
     height: "100vh",
     backgroundSize: "cover",
     backgroundRepeat: "no-repeat",
     backgroundPosition: "center",
     backgroundColor: "black",
-    overflow: "hidden", 
+    overflow: "hidden",
     overscrollBehavior: "contain",
   };
 

@@ -2,7 +2,6 @@ import { Box, Stack, Typography, useMediaQuery } from "@mui/material";
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
-import homeBackground from "../img/homeBackground.jpg";
 import candle from "../img/candle.png";
 import hand from "../img/hand.png";
 
@@ -28,7 +27,8 @@ const Home = (props) => {
   }, [listOfPages]);
 
   const molPageStyle = {
-    backgroundImage: `url('${homeBackground}')`,
+    backgroundImage: `url('/homeBackground.jpg')`,
+    backgroundColor: "black",
     height: "100vh",
     backgroundSize: "cover",
     backgroundRepeat: "no-repeat",
