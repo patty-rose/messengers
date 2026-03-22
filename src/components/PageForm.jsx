@@ -20,12 +20,36 @@ function PageForm({ initialData = {}, onSubmit }) {
 
   const navigate = useNavigate();
 
+  const compressImage = (file) => {
+    return new Promise((resolve) => {
+      const img = new Image();
+      const objectUrl = URL.createObjectURL(file);
+      img.onload = () => {
+        const maxWidth = 1920;
+        let { width, height } = img;
+        if (width > maxWidth) {
+          height = Math.round((height * maxWidth) / width);
+          width = maxWidth;
+        }
+        const canvas = document.createElement("canvas");
+        canvas.width = width;
+        canvas.height = height;
+        canvas.getContext("2d").drawImage(img, 0, 0, width, height);
+        URL.revokeObjectURL(objectUrl);
+        canvas.toBlob((blob) => resolve(blob), "image/jpeg", 0.82);
+      };
+      img.src = objectUrl;
+    });
+  };
+
   const handleFileUpload = async () => {
     // PRIORITY: Uploaded image wins over URL
     if (imageUpload) {
+      const compressed = await compressImage(imageUpload);
       const imageRefName = imageUpload.name + v4();
       const imageRef = ref(storage, `/${imageRefName}`);
-      const snapshot = await uploadBytes(imageRef, imageUpload);
+      const metadata = { contentType: "image/jpeg", cacheControl: "public, max-age=31536000" };
+      const snapshot = await uploadBytes(imageRef, compressed, metadata);
       const url = await getDownloadURL(snapshot.ref);
       return { url, imageRefName };
     } else if (manualImageURL) {
