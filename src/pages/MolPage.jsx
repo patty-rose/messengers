@@ -36,7 +36,10 @@ const MolPage = (props) => {
       const img = new Image();
       img.src = thisPage.backgroundImage;
       img.onload = () => setBgLoaded(true);
-      img.onerror = () => setBgError(true);
+      img.onerror = () => {
+        console.error(`Failed to load background image for page ${pageId}: ${thisPage.backgroundImage}`);
+        setBgError(true);
+      };
     }
   }, [pageId, navigate])
 
@@ -64,25 +67,6 @@ const MolPage = (props) => {
   return (
     <Box sx={molPageStyle}>
       <Stack direction="column" alignItems="center">
-        {bgError && (
-          <Typography
-            sx={{
-              position: "fixed",
-              top: 16,
-              left: "50%",
-              transform: "translateX(-50%)",
-              backgroundColor: "rgba(180,0,0,0.85)",
-              color: "white",
-              px: 3,
-              py: 1,
-              borderRadius: 1,
-              fontFamily: "Special Elite",
-              zIndex: 20,
-            }}
-          >
-            Image failed to load
-          </Typography>
-        )}
         {fromDashboard && (
           <Button
             variant="contained"
