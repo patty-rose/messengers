@@ -24,9 +24,9 @@ const MolPage = (props) => {
   const randomPageId = onGetRandomPageId(listOfPages, pageId);
   const [bgLoaded, setBgLoaded] = useState(false);
 
-  useEffect(()=>{
-    if (!listOfPages){
-      navigate(`/`);
+  useEffect(() => {
+    if (!listOfPages) {
+      navigate("/");
       return;
     }
     if (thisPage?.backgroundImage) {
@@ -34,7 +34,7 @@ const MolPage = (props) => {
       img.src = thisPage.backgroundImage;
       img.onload = () => setBgLoaded(true);
     }
-  }, [pageId])
+  }, [pageId, navigate])
 
   const handleNavigationClick = () => {
     navigate(`/mol/${randomPageId}`);
@@ -92,7 +92,7 @@ const MolPage = (props) => {
             color: "red",
             marginLeft: isMobile ? "5vh" : "10vh",
             marginRight: isMobile ? "5vh" : "10vh",
-            marginTop: thisPage.textPosition ? `${thisPage.textPosition}vh` : "47vh",
+            marginTop: thisPage?.textPosition ? `${thisPage.textPosition}vh` : "47vh",
             fontSize: isMobile ? "7vw" : undefined,
             fontWeight: "bold",
             letterSpacing: "0.01em",
