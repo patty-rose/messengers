@@ -1,0 +1,57 @@
+name: Storage usage watch
+
+on:
+  schedule:
+    - cron: "0 */4 * * *" # every 4 hours
+  workflow_dispatch: # allow manual trigger from GitHub UI
+
+jobs:
+  check-and-lock:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Authenticate with Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GOOGLE_CREDENTIALS }}
+
+      - name: Check storage egress
+        id: usage
+        run: |
+          node scripts/checkStorageUsage.mjs
+          echo "should_lock=false" >> $GITHUB_OUTPUT
+        continue-on-error: true
+
+      - name: Set lock flag
+        id: flag
+        run: |
+          if [ "${{ steps.usage.outcome }}" == "failure" ]; then
+            echo "should_lock=true" >> $GITHUB_OUTPUT
+          else
+            echo "should_lock=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Lock storage
+        if: steps.flag.outputs.should_lock == 'true'
+        run: |
+          cat > storage.rules << 'EOF'
+          rules_version = '2';
+          service firebase.storage {
+            match /b/{bucket}/o {
+              match /{allPaths=**} {
+                allow read, write: if false;
+              }
+            }
+          }
+          EOF
+          npm ci --ignore-scripts
+          npx firebase-tools deploy --only storage \
+            --token "${{ secrets.FIREBASE_TOKEN }}" \
+            --non-interactive
+          echo "::warning::Storage locked due to high egress. Run node scripts/unlockStorage.mjs locally to restore."
