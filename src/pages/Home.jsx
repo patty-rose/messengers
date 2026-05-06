@@ -25,16 +25,6 @@ const Home = (props) => {
     return () => document.head.removeChild(link);
   }, []);
 
-  //preload all images:
-  useEffect(() => {
-    listOfPages.forEach((page) => {
-      const img = new Image();
-      img.src = page.backgroundImage;
-      img.style.display = "none";
-      document.getElementById("hidden-container").appendChild(img);
-    });
-  }, [listOfPages]);
-
   const molPageStyle = {
     backgroundImage: `url('/homeBackground.jpg')`,
     backgroundColor: "black",
@@ -158,7 +148,6 @@ const Home = (props) => {
           handleNavigationClick();
         }}
       />
-      <div id="hidden-container"></div>
       <Box
         sx={{
           position: "fixed",
