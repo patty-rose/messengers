@@ -23,16 +23,20 @@ const MolPage = (props) => {
   const thisPage = listOfPages?.find((page) => page.id === pageId);
   const randomPageId = onGetRandomPageId(listOfPages, pageId);
   const [bgLoaded, setBgLoaded] = useState(false);
+  const [bgError, setBgError] = useState(false);
 
   useEffect(() => {
     if (!listOfPages) {
       navigate("/");
       return;
     }
+    setBgLoaded(false);
+    setBgError(false);
     if (thisPage?.backgroundImage) {
       const img = new Image();
       img.src = thisPage.backgroundImage;
       img.onload = () => setBgLoaded(true);
+      img.onerror = () => setBgError(true);
     }
   }, [pageId, navigate])
 
@@ -47,7 +51,7 @@ const MolPage = (props) => {
   const molPageStyle = {
     display: "flex",
     justifyContent: "center",
-    backgroundImage: bgLoaded ? `url('${thisPage?.backgroundImage}')` : "none",
+    backgroundImage: bgLoaded && !bgError ? `url('${thisPage?.backgroundImage}')` : "none",
     height: "100vh",
     backgroundSize: "cover",
     backgroundRepeat: "no-repeat",
@@ -60,6 +64,25 @@ const MolPage = (props) => {
   return (
     <Box sx={molPageStyle}>
       <Stack direction="column" alignItems="center">
+        {bgError && (
+          <Typography
+            sx={{
+              position: "fixed",
+              top: 16,
+              left: "50%",
+              transform: "translateX(-50%)",
+              backgroundColor: "rgba(180,0,0,0.85)",
+              color: "white",
+              px: 3,
+              py: 1,
+              borderRadius: 1,
+              fontFamily: "Special Elite",
+              zIndex: 20,
+            }}
+          >
+            Image failed to load
+          </Typography>
+        )}
         {fromDashboard && (
           <Button
             variant="contained"
