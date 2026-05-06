@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import AppWrapper from "./AppWrapper";
 import {
   collection,
   addDoc,
-  onSnapshot,
+  getDocs,
   updateDoc,
   doc,
   deleteDoc,
   serverTimestamp,
-  query, 
+  query,
   orderBy,
 } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
@@ -24,6 +24,8 @@ import EditPage from "./pages/EditPage";
 import Error from "./pages/Error";
 import { deleteObject, ref } from "firebase/storage";
 
+const CACHE_TTL = 10 * 60 * 1000; // 10 minutes
+
 function App() {
   const [mainPageList, setMainPageList] = useState([]);
   const [currentUser, setCurrentUser] = useState(null);
@@ -31,49 +33,49 @@ function App() {
   useEffect(() => {
     document.body.style.overflow = "hidden";
     return () => {
-      document.body.style.overflow = "auto"; // cleanup if needed
+      document.body.style.overflow = "auto";
     };
   }, []);
-  
-  //Auth object & observer:
-  const auth = getAuth();
 
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      setCurrentUser(user);
-    } else {
-      setCurrentUser(null);
-    }
-  });
-
-  //query Firestore
   useEffect(() => {
-    const pagesQuery = query(collection(db, "pages"), orderBy("timeOpen", "desc"));
-
-    const unSubscribe = onSnapshot(
-      pagesQuery,
-      (collectionSnapshot) => {
-        const pages = [];
-        collectionSnapshot.forEach((doc) => {
-          pages.push({
-            pageText: doc.data().pageText,
-            textPosition: doc.data().textPosition,
-            backgroundImage: doc.data().backgroundImage,
-            imageRefName: doc.data().imageRefName,
-            timestamp: serverTimestamp(),
-            timeOpen: doc.data().timeOpen,
-            id: doc.id,
-          });
-        });
-        setMainPageList(pages);
-        localStorage.setItem("mainPageList", JSON.stringify(pages));
-      },
-      (error) => {
-        console.log("Error:", error);
-      }
-    );
-    return () => unSubscribe();
+    const auth = getAuth();
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setCurrentUser(user ?? null);
+    });
+    return () => unsubscribe();
   }, []);
+
+  const fetchPages = useCallback(async () => {
+    const pagesQuery = query(collection(db, "pages"), orderBy("timeOpen", "desc"));
+    try {
+      const snapshot = await getDocs(pagesQuery);
+      const pages = snapshot.docs.map((document) => ({
+        pageText: document.data().pageText,
+        textPosition: document.data().textPosition,
+        backgroundImage: document.data().backgroundImage,
+        imageRefName: document.data().imageRefName,
+        timeOpen: document.data().timeOpen,
+        id: document.id,
+      }));
+      setMainPageList(pages);
+      localStorage.setItem("mainPageList", JSON.stringify(pages));
+      localStorage.setItem("mainPageListTime", String(Date.now()));
+    } catch (error) {
+      console.log("Error fetching pages:", error);
+      const cached = localStorage.getItem("mainPageList");
+      if (cached) setMainPageList(JSON.parse(cached));
+    }
+  }, []);
+
+  useEffect(() => {
+    const cached = localStorage.getItem("mainPageList");
+    const cachedTime = localStorage.getItem("mainPageListTime");
+    if (cached && cachedTime && Date.now() - parseInt(cachedTime) < CACHE_TTL) {
+      setMainPageList(JSON.parse(cached));
+      return;
+    }
+    fetchPages();
+  }, [fetchPages]);
 
   //protected route comp:
   const ProtectedRoute = ({ children }) => {
@@ -84,9 +86,15 @@ function App() {
     return children;
   };
 
+  const invalidateCache = () => {
+    localStorage.removeItem("mainPageListTime");
+  };
+
   //CRUD handlers:
   const handleAddingNewPageToList = async (newPageData) => {
     const docRef = await addDoc(collection(db, "pages"), newPageData);
+    invalidateCache();
+    await fetchPages();
     return docRef;
   };
 
@@ -96,18 +104,20 @@ function App() {
       ...pageToEdit,
       timeOpen: serverTimestamp(),
     });
+    invalidateCache();
+    await fetchPages();
   };
 
   const handleClickingDelete = async (id, imageRefName) => {
     await deleteDoc(doc(db, "pages", id));
-    const imageRef = ref(storage, imageRefName);
-    deleteObject(imageRef)
-      .then(() => {
-        console.log(`${imageRefName} successfully deleted from storage`);
-      })
-      .catch((error) => {
+    invalidateCache();
+    await fetchPages();
+    if (imageRefName) {
+      const imageRef = ref(storage, imageRefName);
+      deleteObject(imageRef).catch(() => {
         console.log(`Error: unsuccessful image deletion`);
       });
+    }
   };
 
   const handleGetRandomPageId = (pagesArr, currentPage) => {
