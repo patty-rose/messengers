@@ -99,11 +99,17 @@ function App() {
   };
 
   const handleEditingPageInList = async (pageToEdit) => {
-    const pageRef = doc(db, "pages", pageToEdit.id);
+    const { oldImageRefName, ...updateData } = pageToEdit;
+    const pageRef = doc(db, "pages", updateData.id);
     await updateDoc(pageRef, {
-      ...pageToEdit,
+      ...updateData,
       timeOpen: serverTimestamp(),
     });
+    if (oldImageRefName && oldImageRefName !== updateData.imageRefName) {
+      deleteObject(ref(storage, oldImageRefName)).catch(() => {
+        console.log("Error deleting old image from storage");
+      });
+    }
     invalidateCache();
     await fetchPages();
   };

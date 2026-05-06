@@ -6,7 +6,7 @@ function EditPage({ listOfPages, onEditPage }) {
   const thisPage = listOfPages.find((page) => page.id === pageId);
 
   const handleSubmit = (data) => {
-    onEditPage({ ...data, id: thisPage.id });
+    onEditPage({ ...data, id: thisPage.id, oldImageRefName: thisPage.imageRefName });
   };
 
   return <PageForm initialData={thisPage} onSubmit={handleSubmit} />;
