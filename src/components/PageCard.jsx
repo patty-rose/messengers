@@ -53,6 +53,7 @@ export function PageCard(props) {
             <img
               src={backgroundImage}
               alt="Page background"
+              loading="lazy"
               style={{
                 width: "100%",
                 height: "200px",
