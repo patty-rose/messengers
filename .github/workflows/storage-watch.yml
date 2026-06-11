@@ -1,9 +1,10 @@
-name: Storage usage watch
+name: Storage usage watch (DISABLED)
 
-on:
-  schedule:
-    - cron: "0 */4 * * *" # every 4 hours
-  workflow_dispatch: # allow manual trigger from GitHub UI
+# Workflow disabled - account already protected from costs
+# on:
+#   schedule:
+#     - cron: "0 */4 * * *" # every 4 hours
+#   workflow_dispatch: # allow manual trigger from GitHub UI
 
 jobs:
   check-and-lock:
